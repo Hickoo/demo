@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>粒子连线特效</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,body{
+				width: 100%;
+				height: 100%;
+			}
+			#myCanvas{
+				display: block;
+				background: black;
+			}
+		</style>
+		<script type="text/javascript">
+			var  w,//页面宽
+					h,//页面高
+					c,//canvas dom对象
+					cxt,//2d绘图对象
+					particles,//粒子对象实例数组
+					n,//粒子个数
+					handle,//事件处理程序句柄
+//					distance,//任意两个粒子允许连线的最大距离
+					mouse,//代表鼠标位置的粒子对象
+			onload=function(){
+				c=document.getElementById("myCanvas");
+				cxt=c.getContext("2d");//获取h5内建的2d绘图对象
+				function init(){
+					w=c.width=window.innerWidth;
+					h=c.height=window.innerHeight;//顺便保存页面宽高
+					n=Math.floor(w*h/10000);//粒子的数量由浏览器窗口大小决定
+					particles=[];//初始化:清空
+					mouse=new Particle();
+					mouse.r=0;
+					particles.push(mouse);//代表鼠标的粒子放在数组首位
+					for(var i=0;i<n;i++){
+						particles.push(new Particle());//创建Particle对象实例并保存在数组中
+					}
+					cancelAnimationFrame(handle);//这里不取消,每次窗口大小改变粒子运动就会加快
+					randomMove();
+				}
+				init();
+				function randomMove(){
+					drawParticle();
+					handle=requestAnimationFrame(randomMove);
+				}
+//				addEventListener("resize",init);
+				onresize=init;
+				
+				c.onmousemove=function(e){//为代表鼠标的粒子更新坐标
+					mouse.x=e.pageX || e.clientX;
+					mouse.y=e.pageY || e.clientY;
+//					console.log(particles[0]==mouse)
+//					console.log("当前粒子个数"+particles.length)
+				}
+				c.onclick=function(e){//点击添加一个粒子
+					var particle=new Particle();
+					particle.x=e.pageX || e.clientX;
+					particle.y=e.pageY || e.clientY;
+					particles.push(particle);
+					console.log("当前粒子个数"+particles.length)
+				}
+				function drawParticle(){
+					cxt.clearRect(0,0,w,h);
+					for(var i=0,l=particles.length;i<l;i++){
+						particles[i].draw();//注释此句将只能看到线条
+						for(var j=0;j<l;j++){
+							if(i!=j)//不算自己跟自己的距离
+								isDrawLine(particles[i],particles[j]);
+						}
+						if(particles[i]!=mouse)//代表鼠标位置的粒子不自动运动
+							particles[i].move();
+					}
+				};
+				function isDrawLine(x,y){//距离小于distance的粒子连线
+					var distance= x===mouse || y===mouse ? 200 : Math.min(x.distance,y.distance);
+					//鼠标所在的粒子连接距离可以设远一点
+					//连线距离要满足两个粒子中要求最短的
+					if(Math.sqrt(Math.pow((x.x-y.x),2)+Math.pow((x.y-y.y),2))<distance){
+						cxt.beginPath();
+						cxt.strokeStyle=mixRGBColor(x.color,y.color);//没事干,连线的颜色取两个粒子的颜色中间值
+						cxt.moveTo(x.x,x.y);//从起点开始
+						cxt.lineTo(y.x,y.y);
+						cxt.stroke();
+					}
+				}//isDrawLine结束
+				
+				function mixRGBColor(x,y){//俩粒子连线的颜色为它们颜色的中间值
+					var c1=x.split(","),
+						  c2=y.split(","),
+						  r=Math.round((parseInt(c1[0].match(/\d+/)[0])+parseInt(c2[0].match(/\d+/)[0]))/2),
+						  g=Math.round((parseInt(c1[1].match(/\d+/)[0])+parseInt(c2[1].match(/\d+/)[0]))/2),
+						  b=Math.round((parseInt(c1[2].match(/\d+/)[0])+parseInt(c2[2].match(/\d+/)[0]))/2);
+						return `rgb(${r},${g},${b})`//es6新特性字符串拼凑${变量}
+				}
+
+			}
+			function Particle(){//构造粒子对象
+				this.r=randomRange(3,6);//半径
+				this.x=randomRange(this.r,w-this.r);
+				this.y=randomRange(this.r,h-this.r);//生成随机不可越界粒子圆心坐标
+				this.moveX=randomSpeed();
+				this.moveY=randomSpeed();
+				this.color=randomColor();
+				this.distance=randomRange(50,100);//每个粒子有自己的随机连接距离
+				
+			}
+			Particle.prototype.draw = function(){
+				cxt.beginPath();//不开始路径有彩蛋
+				cxt.arc(this.x,this.y,this.r,0,Math.PI*2);
+//				cxt.closePath();//不结束路径有彩蛋
+				cxt.fillStyle=this.color;
+				cxt.fill();
+			}
+			Particle.prototype.move = function(){
+				if(this.x<this.r || this.x>w-this.r){
+					this.moveX=-this.moveX;//取反反弹
+				}else if(this.y<this.r || this.y>h-this.r){
+					this.moveY=-this.moveY;
+				}
+				this.x+=this.moveX;
+				this.y+=this.moveY;
+
+//				this.moveX=randomSpeed();
+//				this.moveY=randomSpeed();//加上这两行粒子就会原地抖动,因为每次都随机了位移不是-1就是1
+			}
+			function randomColor(){
+				var r=randomRange(0,255);
+				var g=randomRange(0,255);
+				var b=randomRange(0,255);
+//				return "rgb("+r+","+g+","+b+")"
+				return `rgb(${r},${g},${b})`
+			}
+			function randomRange(Min,Max){//Min<=返回值<=Max,随机范围内的整数
+		        var Range = Max - Min;
+		        var Rand = Math.random();
+		        return Min + Math.round(Rand * Range); //四舍五入
+			}
+			function randomSpeed(){
+				return Math.random()<0.5 ? -1 : 1//返回-1或1
+//				return (Math.random()<0.5 ? -1 : 1)*randomRange(1,3)//返回-3到3不包括0,当做粒子坐标更新的增量
+			}
+
+			if (!Date.now)
+			    Date.now = function() { return new Date().getTime(); };
+			(function() {
+			    'use strict';
+			    
+			    var vendors = ['webkit', 'moz'];
+			    for (var i = 0,l=vendors.length; i<l && !window.requestAnimationFrame; ++i) {
+			        var vp = vendors[i];
+			        window.requestAnimationFrame = window[vp+'RequestAnimationFrame'];
+			        window.cancelAnimationFrame = (window[vp+'CancelAnimationFrame']
+			                                   							|| window[vp+'CancelRequestAnimationFrame']);
+			    }
+			    if (/iP(ad|hone|od).*OS 6/.test(window.navigator.userAgent) // iOS6 is buggy
+			        || !window.requestAnimationFrame || !window.cancelAnimationFrame) {
+			        var lastTime = 0;
+			        window.requestAnimationFrame = function(callback) {
+			            var now = Date.now();
+			            var nextTime = Math.max(lastTime + 16, now);
+			            return setTimeout(function() { callback(lastTime = nextTime); },
+			                              nextTime - now);
+			        };
+			        window.cancelAnimationFrame = clearTimeout;
+			    }
+			}());
+		</script>
+	</head>
+	<body>
+		<canvas id="myCanvas">您的浏览器不支持canvas</canvas>
+	</body>
+</html>
