@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>一列布局自适应居中</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+		}
+		html,body{
+			height: 100%;/*重点1*/
+		}
+		#con{
+			width: 80%;
+			height: 100%;/*重点2*/
+			background: #666;
+			margin: 0 auto;
+			font-size: 1000%;
+			text-align: center;/*文本水平居中*/
+			/*line-height: 500px;*/
+			/*文本垂直居中一般设置行高等于所在容器高即可，或者用flex布局*/
+			display: flex;/*弹性布局*/
+			align-items: center;/*垂直居中*/
+			justify-content: center;/*水平居中*/
+		}
+	</style>
+</head>
+<body>
+	<div id="con">hello</div>
+</body>
+</html>
