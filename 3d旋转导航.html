@@ -1,0 +1,108 @@
+<!doctype html>
+<htmllang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+	<style>
+        .wrapper {
+            display: inline-block;
+        	width: 310px;
+            height: 100px;
+        	margin: 1em 1.5em 2em 0;
+        	position: relative;
+            box-shadow: 5px 5px 5px #888888;
+        }
+        
+        .item {
+            height: 100px;
+        	transform-style: preserve-3d;
+            transition: transform .6s;
+        }
+        
+        .item:hover {
+        /*任务四、悬浮状态改变每个列表项的transform效果*/
+        transform: rotateX(90deg);
+        
+        }
+        
+        .item img {
+            display: block;
+            position: absolute;
+
+           transform: translateZ(50px);
+
+           width: 310px; 
+           height: 100px;
+         }
+        
+        .item .information {
+           display: block;
+           position: absolute;
+           top:50px;
+           height: 100px;
+           width: 310px;
+            background:lightblue;
+            transform: rotateX(-90deg) ;
+         }
+        
+
+
+	</style>
+</head>
+<body>
+	
+    	<h1>CSS3 3D变形制作视频展示区</h1>
+    	<div class="wrapper">
+    	    <div class="item">
+            	<img src="http://img.mukewang.com/545b1e900001db6d04630253.png" />
+            	<span class="information">
+            	<strong>澳门风云</strong>闻名中外，曾担任美国赌场保安总顾问的魔术手石一坚，终回流澳门退休，更宴请各方朋友到来庆祝生日宴.
+            	</span>
+        	</div>
+    	</div>
+    	
+    	<div class="wrapper">
+        	<div class="item">
+            	<img src="http://img.mukewang.com/545b1eb20001ed6a03360201.png" />
+            	<span class="information">
+            	<strong>改过迁善</strong>该剧讲述了金明民饰演的律师在失忆后回顾自己以往的所作所为心生忏悔，为弥补自己犯下的错误而与自己曾经工作过的律师事务所对簿公堂的故事。
+            	</span>
+        	</div>
+    	</div>
+    	
+    	<div class="wrapper">
+        	<div class="item">
+            	<img src="http://img.mukewang.com/545b1eef0001c62903830217.png" />
+            	<span class="information">
+            	<strong>父子刑警</strong>本剧改编自雫井修介小说《Bitter Blood》。剧中，新晋刑警•佐原夏辉（佐藤健饰）被分配到银座警察
+            	</span>
+        	</div>
+    	</div>
+    	
+    	<div class="wrapper">
+        	<div class="item">
+            	<img src="http://img.mukewang.com/545b1f4e0001f90c02850210.png" />
+            	<span class="information">
+            	<strong>果宝特攻3</strong>果宝特攻3,顾名思义是果宝特攻的第二部续集,已在国家广播电影电视总局备案.暂定剧情为:菠萝吹雪偶然间穿越到了古代的水果世界
+            	</span>
+        	</div>
+    	</div>
+    	<div class="wrapper">
+        	<div class="item">
+            	<img src="http://img.mukewang.com/545b1f5500017d5603190214.png" />
+            	<span class="information">
+            	<strong>红眼</strong>1988年7月16日，从汉城始发的列车发生了一起严重的交通事故，造成100多人死亡。
+            	</span>
+        	</div>
+    	</div>
+    	<div class="wrapper">
+        	<div class="item">
+            	<img src="http://img.mukewang.com/545b1f620001874503500209.png" />
+            	<span class="information">
+            	<strong>熊出没之夺宝熊兵</strong>一场漆黑雨夜的意外事故，一段笑料十足的误打误撞，将两个外表相似却内容各异的箱子调换。
+            	</span>
+        	</div>
+    	</div>
+	
+</body>
+</html>
