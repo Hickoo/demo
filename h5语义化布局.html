@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>h5语义化布局</title>
+		<style type="text/css">
+			html,
+			body {
+				height: 100%;
+				padding: 0;
+				margin: 0;
+			}
+			#con{
+				width: 50%;
+				height: 80%;
+				margin: 0 auto;
+			}
+			header,nav,aside,article,section,footer{
+				background: lightgreen;
+				border-radius: 10px;
+				margin-bottom: 10px;
+				text-align: center;
+				font-size: 30px;
+			}
+			footer{
+				margin: 0;
+			}
+			header,nav,footer{
+				height: 50px;
+				line-height: 50px;
+			}
+			#main:after{
+				content: "";
+				display: block;
+				clear: both;
+			}
+			aside,article{
+				float: left;
+				vertical-align: middle;
+				height: 300px;
+				line-height: 300px;
+				
+			}
+			aside{
+				width: 20%;
+				margin-right: 10px;
+			}
+			article{
+				width: calc(80% - 10px);
+				position: relative;
+			}
+			section{
+				background: lightcyan;
+				opacity: .3;
+				width: 80%;
+				height: 30%;
+				margin: auto;
+				line-height: 80px;
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="con">
+			<header>header</header>
+			<nav>nav</nav>
+			<div id="main">
+				<aside>aside</aside>
+				<article>
+					article
+					<section>section</section>
+				</article>
+			</div>
+
+			<footer>footer</footer>
+		</div>
+	</body>
+</html>
