@@ -1,0 +1,21 @@
+<body>
+	<script type="text/javascript">
+
+		function Request(strName) {
+			var strHref = location.href;
+			var intPos = strHref.indexOf("?");
+			var strRight = strHref.substr(intPos + 1);
+			var arrTmp = strRight.split("&");
+			for (var i = 0; i < arrTmp.length; i++) {
+				var arrTemp = arrTmp[i].split("=");
+				if (arrTemp[0].toUpperCase() == strName.toUpperCase()) return arrTemp[1];
+			}
+			return "";
+		}
+		var url = Request("url");
+		if (url == "") document.write("没有url值");
+		else window.location.href = url;
+		//document.write("url值为：" + url);
+		
+	</script>
+</body>
